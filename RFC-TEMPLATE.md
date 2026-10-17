@@ -4,11 +4,19 @@ Status: draft
 
 Authors:
 Observed:
-English source / Japanese translation:
+Language: English (authoritative)
+Optional Japanese translation:
 
 ## Question and scope
 
 State the exact question and the unsupported cases.
+
+## Terminology
+
+Reference terms from the [shared glossary](https://github.com/OpenJTD/spec/blob/main/TERMINOLOGY.md).
+Define terms specific to this RFC here.
+Preserve relevant official Japanese UI terms alongside English explanations.
+Distinguish official UI terms from technical terms introduced by this research.
 
 ## Inputs and provenance
 
