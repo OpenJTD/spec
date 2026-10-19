@@ -2,7 +2,7 @@
 
 ## Scope
 
-This RFC records body framing, span declarations, ruled-line fields, and trailing styles. It compares Tika source 0013 observations with rjtd source 0009.
+This RFC records body framing, span declarations, ruled-line (罫線, keisen) fields, and trailing styles. It compares Tika source 0013 observations with rjtd source 0009.
 
 Stored display instructions belong to interpretation. Row/column/cell reconstruction and HTML/Markdown contracts belong to implementations.
 
