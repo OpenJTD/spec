@@ -4,9 +4,9 @@ Imported: 2026-10-05
 
 Source: [OpenJTD/rjtd at d5c7f33](https://github.com/OpenJTD/rjtd/tree/d5c7f337e55ce4411bf4130a2352d0d3942bab87/openjtd-spec/rfc).
 
-These four files are copied byte for byte under their existing Apache-2.0
-license. Their source history remains in rjtd. The imported documents retain
-`Status: draft`; no new joint acceptance or independent reproduction is claimed.
+At the initial import, these four files were copied byte for byte under their existing Apache-2.0
+license. Their source history remains in rjtd. The initial copies retained
+`Status: draft`; that import did not establish joint acceptance or independent reproduction.
 
 | File | SHA-256 |
 | --- | --- |
@@ -23,6 +23,19 @@ References to rhwp are design/reference context, not JTD evidence by themselves.
 Apply the draft evidence labels to individual claims before accepting either
 RFC. The corpus trial demonstrates only two synthetic text-stream contracts.
 
-The original rjtd copies remain as implementation-local historical records;
-new shared review and revisions take place here. Other RFCs stay in rjtd until
-selected for a later import. English/Japanese pairs remain together.
+## Consolidated RFC sequence
+
+The initial imported versions are preserved at [spec f07e191](https://github.com/OpenJTD/spec/tree/f07e191cb9d8ac99c341d624ed80aa6e8d3df4b8/rfc).
+The hashes above identify those original copies, not the revised files.
+
+The shared sequence consolidates source RFCs into 0001–0009. Initial 0001 is
+revised in place; initial DocumentText 0003 is covered by shared 0002. Shared
+0003 now describes compression. The original Japanese 0001/0003 translations
+remain available at the history link; they are removed from the current tree
+because their wording and numbers no longer match the revised English texts.
+This change does not alter the original rjtd or Tika repositories.
+
+[The consolidation ledger](research/CONSOLIDATION.md) records pinned sources,
+new/original numbering, evidence limits, and different interpretations. It
+includes later Tika 0010–0013 research without treating imported records or
+ports as independent verification.
