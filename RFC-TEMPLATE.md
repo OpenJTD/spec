@@ -1,5 +1,6 @@
 # RFC NNNN: Title
 
+Template status: draft for joint review.
 Status: draft
 
 Authors:
