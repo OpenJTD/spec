@@ -30,17 +30,30 @@ and links to the original texts in Git history.
 ## Research and validation
 
 The [research policy](RESEARCH-POLICY.md), [evidence labels](EVIDENCE.md),
-[RFC template](RFC-TEMPLATE.md), and [observation format](OBSERVATIONS.md) are
-maintained separately. The labels, template, and observation format retain
+[RFC template](RFC-TEMPLATE.md), [observation format](OBSERVATIONS.md), and
+[shared glossary](TERMINOLOGY.md) are maintained separately.
+The labels, template, observation format, and glossary retain
 their existing joint-review status; this RFC consolidation does not finalize
-their schemas. The separate language/terminology proposal is
-[PR #1](https://github.com/OpenJTD/spec/pull/1).
+their formats.
 
 The consolidation compares published records and code. It does not claim new
 native authoring experiments or independent parser execution. Missing input
 IDs, hashes, version coverage, and reproduction results remain explicit in the
 RFCs for joint verification. Shared public fixtures are in
 [OpenJTD/corpus](https://github.com/OpenJTD/corpus).
+
+## Documentation language
+
+Status: draft for joint review
+
+Use English as the authoritative language for shared RFCs and specifications.
+Japanese translations are optional.
+Each translation must identify the English version as authoritative.
+Preserve official Japanese UI terms where they matter for descriptions and reproduction.
+Add English explanations where relevant.
+
+Use the [shared glossary](TERMINOLOGY.md) for terms used across RFCs.
+Keep terms specific to one RFC in that document.
 
 Apache-2.0 covers our authored material. Referenced software, external inputs,
 and quoted material retain their original rights and terms.
