@@ -1,23 +1,42 @@
 # OpenJTD spec
 
-Shared JTD research that can be checked independently of one implementation:
-RFCs, observations, reproduction procedures, and validation criteria.
-rjtd and Tika JTD+ remain independent implementations.
+Shared research and specifications for Ichitaro JTD, JTT, and JTTC documents.
+The RFCs describe source data and its interpretation. Subprojects choose their
+internal models and presentation methods.
 
-## Initial trial
+## Shared RFCs
 
-| RFC | English | Japanese | State |
-| --- | --- | --- | --- |
-| 0001 | [JTD Container Inventory](rfc/0001-container.md) | [JTD コンテナインベントリ](rfc/0001-container.ja.md) | Imported historical draft |
-| 0003 | [DocumentText Initial Text Extraction](rfc/0003-document-text.md) | [DocumentText 初期テキスト抽出](rfc/0003-document-text.ja.md) | Imported historical draft |
+| RFC | Subject |
+| --- | --- |
+| [0001](rfc/0001-container.md) | Container structure and stream inventory |
+| [0002](rfc/0002-document-text.md) | Content extents and text interpretation |
+| [0003](rfc/0003-compressed-container.md) | JTTC compressed container |
+| [0004](rfc/0004-position-tables-and-bookmarks.md) | Position tables and bookmark names |
+| [0005](rfc/0005-layout-marks-and-pages.md) | Layout marks and page instructions |
+| [0006](rfc/0006-object-streams-and-anchors.md) | Objects, equations, and source associations |
+| [0007](rfc/0007-records-and-ruled-flow.md) | Record framing and ruled-line flow |
+| [0008](rfc/0008-document-sheets.md) | Document sheets |
+| [0009](rfc/0009-embedded-payloads.md) | Embedded documents and graphic payloads |
 
-See [IMPORTS.md](IMPORTS.md) for exact source commits and limitations. Imported
-RFCs retain their original wording and status. Import does not make their
-claims a jointly accepted format specification.
+Read each rule within its recorded profile and evidence scope. Explicit
+hypotheses, alternative interpretations, and unknown fields remain unresolved
+as stated; adopting a document does not turn those alternatives into facts.
+
+Each RFC records its sources, evidence scope, and unresolved interpretations.
+[IMPORTS.md](IMPORTS.md) preserves the initial import provenance and links to the
+original texts in Git history.
+
+## Research and validation
 
 The [research policy](RESEARCH-POLICY.md), [evidence labels](EVIDENCE.md),
 [RFC template](RFC-TEMPLATE.md), [observation format](OBSERVATIONS.md), and
-[shared glossary](TERMINOLOGY.md) are drafts for joint review.
+[shared glossary](TERMINOLOGY.md) are maintained separately.
+The labels, template, observation format, and glossary retain
+their existing joint-review status; this RFC consolidation does not finalize
+their formats.
+
+Each RFC states the verification performed and the reproduction materials
+provided, together with observation-specific conditions, limits, and open questions.
 Shared public fixtures are in [OpenJTD/corpus](https://github.com/OpenJTD/corpus).
 
 ## Documentation language
@@ -33,5 +52,5 @@ Add English explanations where relevant.
 Use the [shared glossary](TERMINOLOGY.md) for terms used across RFCs.
 Keep terms specific to one RFC in that document.
 
-Apache-2.0 covers our authored material. Referenced software, external input
-documents, and quoted material retain their own rights and terms.
+Apache-2.0 covers our authored material. Referenced software, external inputs,
+and quoted material retain their original rights and terms.
