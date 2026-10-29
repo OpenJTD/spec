@@ -35,7 +35,5 @@ remain available at the history link; they are removed from the current tree
 because their wording and numbers no longer match the revised English texts.
 This change does not alter the original rjtd or Tika repositories.
 
-[The consolidation ledger](research/CONSOLIDATION.md) records pinned sources,
-new/original numbering, evidence limits, and different interpretations. It
-includes later Tika 0010–0013 research without treating imported records or
-ports as independent verification.
+Each shared RFC lists its pinned sources and records the limits of its evidence
+and verification. Imported records and ports do not establish independent reproduction.

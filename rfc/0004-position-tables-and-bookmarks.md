@@ -4,7 +4,11 @@
 
 This RFC records `/DocumentTextPositionTables`, position candidates, and the separate `/MarkTag` name directory. Recovering a bookmark name does not establish its navigation or editing coordinates.
 
-Compare initial source RFC 0006 observations with rjtd's controlled Ichitaro 2026 bookmark cases. Tika's imported initial record is not an independent reproduction. Attach input IDs, hashes, authoring versions, and source extents. Positions below are relative to the owning logical stream.
+The recorded profiles include the initial position-table observations and controlled Ichitaro 2026 bookmark cases.
+
+Positions below are relative to the owning logical stream.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The position-table and bookmark cases have source-record links below. A complete input-level reproduction index is not included here.
 
 ## Position-table framing
 
@@ -20,7 +24,7 @@ One initial family has 29-byte entries from stream offset `0x24`:
 | 4–7 | BE-u32 | Second number |
 | 8–28 | Raw bytes | Tail fields and flag candidates |
 
-The first numbers have ordered/range-like relationships. Body-byte, UTF-16-unit, and style-reference interpretations each fit only some cases. Shifted families also exist; do not impose this stride/layout on every input.
+The first numbers have ordered/range-like relationships. Body-byte, UTF-16-unit, and style-reference interpretations each fit only some cases. Shifted families also exist, so this stride and layout do not cover every input.
 
 An overlap with body text does not establish paragraph ownership, style scope, or page coordinates. Small numbers matching style IDs are insufficient evidence.
 
@@ -36,15 +40,15 @@ In the first five inspected streams, `MarkV.01` starts at byte 30. Its next six 
 
 Later six-byte items fit BE-u16 ID plus BE-u32 value; `0xffff` termination is observed.
 
-The initial parser treated the leading six bytes as a header. Controlled bookmark cases also permit a first ID/value-item interpretation. Keep both alternatives; do not discard that potential item.
+The initial parser treated the leading six bytes as a header. Controlled bookmark cases also permit a first ID/value-item interpretation. The meaning of these bytes remains unresolved.
 
 The values do not directly behave as extracted plain-text positions or LineMark word indexes. Their targets and origins remain unresolved.
 
 ## Offset-bias hypotheses
 
-Adding 29 UTF-16 units reaches saved TOC-title neighborhoods in some initial inputs. Deltas 9/30 compete in others. rjtd's controlled first-line bookmark does not fit fixed `+29`.
+Adding 29 UTF-16 units reaches saved TOC-title neighborhoods in some initial inputs. Deltas 9/30 compete in others. The controlled first-line bookmark does not fit fixed `+29`.
 
-No common fixed conversion is established. Associate proposed biases with their family and counterexamples before extending them.
+No common fixed conversion is established. The candidate biases have different input-family coverage and counterexamples.
 
 ## Separate MarkTag directory
 
@@ -59,7 +63,7 @@ repeat:
   ...     UTF-16BE name
 ```
 
-Three names have values 0, `0x00010000`, and `0x00020000`. These are neutral directory values, not decoded body addresses. Check full framing, Unicode, and exact consumption. Do not read this directory using position-table grammar merely because it shares `MarkV.01`.
+Three names have values 0, `0x00010000`, and `0x00020000`. These are directory values with unresolved meaning, not decoded body addresses. The observed directory has its own framing, Unicode strings, and extent; the shared `MarkV.01` label does not establish position-table grammar.
 
 The association between names and position-table items remains open.
 
@@ -72,21 +76,22 @@ The association between names and position-table items remains open.
 | MarkTag directory | This profile is absent | Controlled name/count/value observations | Attribute the addition to rjtd |
 | TCnt tail roles | Cross-input style/coordinate diagnostics | Same initial research retained in detail | Do not count imported diagnostics twice |
 
-Initial `f1` fields match style candidates in some inputs and text coordinates in others. Nearly constant `f7` also fails to resolve position/flag roles. Do not infer global references from numerical coincidence.
+Initial `f1` fields match style candidates in some inputs and text coordinates in others. Nearly constant `f7` also fails to resolve position/flag roles. Numerical coincidence does not establish a global reference.
 
 Descriptions of `documentTextOverlaps` and paragraph-boundary candidates in Tika's document describe imported rjtd diagnostics. They do not establish Kotlin implementation or independent reproduction of those diagnostics.
 
-## Validation and open questions
+## Open questions
 
-Move one named bookmark across known plain, paragraph, control, supplementary-character, and ruby positions. Change names independently, then add/remove bookmarks. Record both streams and source ranges for each save.
-
-Other maintainers should check item boundaries, strings, and raw values on the same input. A coordinate interpretation must explain units, origins, framing, and all contrasts.
+The coordinate interpretation remains unresolved because the units, origins, and targets do not explain all observed cases.
 
 Unresolved areas include complete TCnt layouts, the first six MarkV bytes, targets/units/origins, name-position correspondence, and version/profile differences.
 
 ## Sources
 
 Source RFC numbers retain their original project numbering.
+
+- [OpenJTD/rjtd detailed research 0006](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0006-document-text-position-tables.md)
+- [OpenJTD/rjtd detailed research 0003 (L698)](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0003-document-text.md#L698)
 
 - [OpenJTD/rjtd source RFC 0006](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/openjtd-spec/rfc/0006-document-text-position-tables.md)
 - [OpenJTD/rjtd source RFC 0003](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/openjtd-spec/rfc/0003-document-text.md)

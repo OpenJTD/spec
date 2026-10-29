@@ -22,10 +22,9 @@ Read each rule within its recorded profile and evidence scope. Explicit
 hypotheses, alternative interpretations, and unknown fields remain unresolved
 as stated; adopting a document does not turn those alternatives into facts.
 
-[CONSOLIDATION.md](research/CONSOLIDATION.md) maps the source records, original
-numbers, and later research to these RFCs. It identifies differences that have
-not been joined. [IMPORTS.md](IMPORTS.md) preserves the initial import provenance
-and links to the original texts in Git history.
+Each RFC records its sources, evidence scope, and unresolved interpretations.
+[IMPORTS.md](IMPORTS.md) preserves the initial import provenance and links to the
+original texts in Git history.
 
 ## Research and validation
 
@@ -36,11 +35,9 @@ The labels, template, observation format, and glossary retain
 their existing joint-review status; this RFC consolidation does not finalize
 their formats.
 
-The consolidation compares published records and code. It does not claim new
-native authoring experiments or independent parser execution. Missing input
-IDs, hashes, version coverage, and reproduction results remain explicit in the
-RFCs for joint verification. Shared public fixtures are in
-[OpenJTD/corpus](https://github.com/OpenJTD/corpus).
+Each RFC states the verification performed and the reproduction materials
+provided, together with observation-specific conditions, limits, and open questions.
+Shared public fixtures are in [OpenJTD/corpus](https://github.com/OpenJTD/corpus).
 
 ## Documentation language
 

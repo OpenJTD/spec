@@ -2,9 +2,13 @@
 
 ## Scope and evidence
 
-This RFC records embedding paths, payload forms, and external-format associations. Separate original CFB bytes from bytes transformed for another parser. Tika delegation, MIME metadata, and generated names belong to implementations.
+This RFC records embedding paths, payload forms, and external-format associations. Original CFB bytes differ from bytes transformed for another parser. Delegation, MIME metadata, and generated names belong to implementations.
 
-Compare Tika source 0011/current ObjectBoxExtractor with rjtd source 0008. Native input IDs/hashes, versions, and payload ranges still need association. Names/search results alone do not establish ownership.
+The recorded profiles include workbook and graphic embeddings, image envelopes, and equation snapshots. Detection and slicing behavior below describes the cited extractor revision, not a native storage rule.
+
+Names and search results alone do not establish ownership.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The sources link extraction code, tests, and payload observations. A complete input-level reproduction index is not included here.
 
 ## Storage paths
 
@@ -19,7 +23,7 @@ Recorded examples include:
 /EmbedItems/Embedding 1/Contents
 ```
 
-`\x03` denotes a control character. Identify nested/sheet-local objects with their owning container and storage. Prefix-based discovery is not a complete object grammar. Lexicographic traversal is not source placement/paint order.
+`\x03` denotes a control character. Nested and sheet-local objects belong to their containing storage and container. Prefix-based discovery is not a complete object grammar. Lexicographic traversal is not source placement/paint order.
 
 ## Workbook payloads
 
@@ -28,13 +32,13 @@ Recorded examples include:
 | Raw BIFF candidate | BOF-like `09 08 10 00`, no outer CFB header |
 | Self-contained CFB | Separate compound document with CFB signature |
 
-Current code uses a shorter prefix in some paths. A match does not validate a complete workbook; check record lengths and full extent.
+The inspected code uses a shorter prefix in some paths. A match does not establish valid record lengths or the complete workbook extent.
 
-Wrapping raw BIFF in a new CFB with a Workbook entry is a parser adapter, not evidence that JTD stored that new container. Record original/derived hashes, sizes, and transformation relationships separately.
+Wrapping raw BIFF in a new CFB with a Workbook entry creates a derived container. This parser adapter does not establish that JTD stored that container.
 
 ## Raw images in Contents
 
-Current Tika code searches the beginning of Contents for JPEG/PNG/GIF/BMP and delegates from the found position to stream end:
+The inspected extractor searches the beginning of Contents for JPEG/PNG/GIF/BMP and delegates bytes from the found position to stream end:
 
 | Candidate | Current code condition |
 | --- | --- |
@@ -45,7 +49,7 @@ Current Tika code searches the beginning of Contents for JPEG/PNG/GIF/BMP and de
 
 These conditions do not validate whole images or exact ends. Minimal-signature synthetic tests do not establish complete native payload validity.
 
-rjtd's detailed records distinguish complete payload candidate extents from surrounding headers/trailers. Early JPEG/GIF cases have source-path candidates and `09 00 01 00` / `04 00 01 00` envelope families. Some last-four-header-byte values match payload size as LE-u32. These are unresolved envelope fields, not a general object header.
+The recorded image candidates have bounded payload extents distinct from surrounding headers/trailers. Early JPEG/GIF cases have source-path candidates and `09 00 01 00` / `04 00 01 00` envelope families. Some last-four-header-byte values match payload size as LE-u32. These are unresolved envelope fields, not a general object header.
 
 Signature detection, complete payload recovery, and the controlled single-PNG Frame association are different levels of evidence. Extracting an image does not establish its body anchor, page position, or paint order.
 
@@ -64,21 +68,21 @@ A proprietary prefix precedes a candidate metafile. The early source describes W
 | WMF | `01 00 09 00` |
 | EMF | `01 00 00 00`, with `20 45 4d 46` at candidate +40 |
 
-Matches do not validate the entire metafile or its terminal boundary. Record original start/end, wrapper prefix, and trailing bytes. Slicing from a match to stream end is not a general save rule.
+Matches do not validate the entire metafile or its terminal boundary. The signature offset, wrapper prefix, payload extent, and trailing data are distinct. Slicing from a match to stream end is not a general save rule.
 
-The old approximate `0x08–0x60` window and current 256-byte search window are implementation choices, not maximum format header lengths. Keep other EmbeddedPress/equation snapshot forms separate.
+The old approximate `0x08–0x60` window and current 256-byte search window are implementation choices, not maximum format header lengths. Other EmbeddedPress and equation snapshot forms are separate profiles.
 
 ## Text in graphics
 
-The source records Shift_JIS WMF TextOut/ExtTextOut cases. Check record types, code pages, fonts, and glyph mappings. Graphics do not universally expose the same encoding or direct Unicode.
+Shift_JIS WMF TextOut/ExtTextOut cases are reported. Text interpretation depends on record type, code page, font, and glyph mapping. Graphics do not universally expose the same encoding or direct Unicode.
 
-Compare graphic text with body text for duplication. Finding text does not require appending it to the body.
+Graphic text may duplicate body text. Its presence does not establish that it belongs at the end of the body.
 
 ## Equation snapshots versus METAFILE
 
-Tika source 0012 reports JSSnapShot32/GCI snapshots and 34-byte Contents stubs for equations. This differs from source 0011's METAFILE family.
+Equation observations include JSSnapShot32/GCI snapshots and 34-byte Contents stubs, distinct from the METAFILE family.
 
-[RFC 0006](0006-object-streams-and-anchors.md) compares GCI TextOut and JSEQ3Contents/MATH.VAF. Do not extend equation-specific WMF absence to all embeddings or apply METAFILE slicing to GCI.
+[RFC 0006](0006-object-streams-and-anchors.md) compares GCI TextOut and JSEQ3Contents/MATH.VAF. Equation-specific WMF absence does not cover all embeddings. METAFILE signature slicing does not establish GCI framing.
 
 ## Documentation and implementation differences
 
@@ -91,15 +95,13 @@ Tika source 0012 reports JSSnapShot32/GCI snapshots and 34-byte Contents stubs f
 | Returned extent | Describes payload extraction | Code slices to stream end | Check trailing data |
 | Order | Case-normalized lexicographic walk | Separate rjtd Frame/Figure order contrasts | Extraction order is not placement order |
 
-Tika delegation/recursion and rjtd ownership/geometry research are complementary. Neither is assumed to include the other's entire scope.
+Delegation/recursion behavior and ownership/geometry observations address different parts of embedded-object handling.
 
 ## Adapter contracts
 
-Implementations choose delegation and order, derived names/MIME/output containers, depth/count/resource budgets, and failure handling. Record source relationships by storage paths and payload ranges, not generated file indexes.
+Delegation and order, derived names/MIME/output containers, depth/count/resource budgets, and failure handling are implementation choices. Storage paths and payload ranges identify source relationships; generated file indexes do not.
 
-## Validation and open questions
-
-Insert one workbook/graphic in a small document, then vary type/content, nesting, object count, and sheet independently. Record original and transformed bytes separately. Other maintainers should check boundaries and inner formats.
+## Open questions
 
 An external parser accepting wrapped/sliced bytes does not establish all JTD header meanings or ownership. Open areas include all object types/paths, body references, proprietary prefixes/end structures, BIFF variants, encodings/maps, duplication, nesting, and version coverage.
 

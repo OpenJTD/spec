@@ -2,9 +2,11 @@
 
 ## Scope and evidence
 
-This RFC records the outer CFB, `/JSCompDocument` wrapper, and decompressed inner CFB observed in `setsuden_05.jttc` and `setsuden_06.jttc`. Initial observations date from 2026-06-18. Authoring versions, input IDs, and hashes still need to be attached to the observations.
+The recorded outer CFB, `/JSCompDocument` wrapper, and decompressed inner CFB profile comes from `setsuden_05.jttc` and `setsuden_06.jttc`, initially examined on 2026-06-18.
 
 The recorded profile has one LHA `-lh5-` member. Other methods, member counts, and versions require separate evidence.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The sources identify the two JTTC inputs and their measurements. A complete redistributable reproduction set for those inputs is not attached to this RFC.
 
 ## Container relationship
 
@@ -49,7 +51,7 @@ Decompressed data starts with CFB signature `d0 cf 11 e0 a1 b1 1a e1`. The paylo
 
 ## Inner document
 
-The recorded first input has 65 inner streams and a 564-byte `/DocumentText`. Investigate fonts, styles, positions, layout marks, notes, and objects in that inner container. A blank/control-heavy body does not imply absent auxiliary data. Preserve the owner when outer and inner containers share a path.
+The recorded first input has 65 inner streams and a 564-byte `/DocumentText`. Fonts, styles, positions, layout marks, notes, and objects belong to the inner container. A blank/control-heavy body does not imply absent auxiliary data. Identical paths in outer and inner containers have different owners.
 
 ## Record and implementation differences
 
@@ -60,11 +62,11 @@ The recorded first input has 65 inner streams and a 564-byte `/DocumentText`. In
 | Auxiliary owner | Current model reads auxiliary streams from decompressed CFB | Inspected JtdParser passes original input to header/box/sheet readers after inner body extraction | Do not assume equal JTTC feature coverage |
 | Dependency policy | Current format record separates implementation policy | Source 0005 retains old Rust/rhwp dependency rationale | Not a shared compression rule |
 
-Different owner selection is an implementation difference, not evidence of two JTTC dialects. Compare outer/inner inventories and results on the same input.
+Different owner selection is an implementation difference, not evidence of two JTTC dialects.
 
 ## Position spaces
 
-Keep these spaces distinct:
+The relevant position spaces are:
 
 1. Physical outer-file bytes.
 2. Logical JSCompDocument bytes.
@@ -73,17 +75,17 @@ Keep these spaces distinct:
 
 The observed 38 belongs to the second space. Inner body positions are not compressed or outer-file positions.
 
-## Validation and open questions
+## Open questions
 
-Compare original wrapper bytes, member header/start, declared/actual sizes, decompressed hashes, inner inventories and stream hashes, checksum/CRC checks, tools, and unavailable cases. Other maintainers should compare with an independent decompressor.
-
-For native uncompressed/JTTC save pairs, compare body, auxiliary streams, and metadata differences. Do not require byte-identical inner containers. Synthetic LH5 tests check decoder behavior, not native save rules.
+Synthetic LH5 tests cover decoder behavior, not native save rules. Byte-identical inner containers are not an established requirement for uncompressed/JTTC save pairs.
 
 Open questions include wrapper fields/start selection, header variants and filenames, trailer/member termination, checksums/CRC, other methods, multiple members, version coverage, recompression, and save preservation.
 
 ## Sources
 
 Source RFC numbers retain their original project numbering.
+
+- [OpenJTD/rjtd detailed research 0005](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0005-jttc-just-compressed-document.md)
 
 - [OpenJTD/rjtd source RFC 0005](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/openjtd-spec/rfc/0005-jttc-just-compressed-document.md)
 - [KHiyowa/Tika-JTD source RFC 0005](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0005-jttc-just-compressed-document.md)

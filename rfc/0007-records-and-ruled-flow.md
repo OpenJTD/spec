@@ -2,21 +2,23 @@
 
 ## Scope
 
-This RFC records body framing, span declarations, ruled-line (罫線, keisen) fields, and trailing styles. It compares Tika source 0013 observations with rjtd source 0009.
+This RFC records body framing, span declarations, ruled-line (罫線, keisen) fields, and trailing styles.
 
 Stored display instructions belong to interpretation. Row/column/cell reconstruction and HTML/Markdown contracts belong to implementations.
 
 ## Evidence and coverage
 
-| Source | Scope |
+| Evidence group | Scope |
 | --- | --- |
-| Shared initial 0009 | 948-footer two-input inventory and later records; imported material is one source |
-| Later rjtd cases | Controlled Ichitaro 2026 paragraphs, short tables, empty spans, wrapping, and surrounding text |
-| Tika 0013 §§2–4, 13–19 | Span, direction, field-combination, and reconstruction experiments; input/version links need completion |
-| Tika 0013 §§20.11, 20.13 | Lite 2 P2/P3 wall direction, weight, side, and color contrasts |
-| Tika 0013 §§20.1–20.7 | Sun-reader internal observations, separate from native data |
+| Initial record inventory | 948 footers in two inputs and later records |
+| Controlled Ichitaro 2026 cases | Paragraphs, short tables, empty spans, wrapping, surrounding text, and directional junction styles |
+| Additional ruled-flow records | Span, direction, field-combination, and reconstruction experiments; input/version coverage is incomplete |
+| Lite 2 P2/P3 | Wall direction, weight, side, and color contrasts |
+| Sun-reader internals | Reference observations, separate from native data |
 
-Do not join different inputs, authoring generations, and reader-internal representations into one dialect. This consolidation did not execute new native experiments.
+These groups have different input profiles, authoring generations, and representations. No common dialect is established across them.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The sources identify the separate evidence groups. Input-level reproduction links and authoring-version coverage are incomplete.
 
 ## Non-inline record framing
 
@@ -33,9 +35,9 @@ w[L-2]           class echo
 w[L-1]           0x001f
 ```
 
-Validate length, class, footer, and owning body extent together. Not every `0x001c` is such a record: `001c 0001 0007 ... 001d` inline openers and sequential control-value runs are separate forms.
+This framing requires consistent length, class, footer, and owning body extent. Not every `0x001c` is such a record: `001c 0001 0007 ... 001d` inline openers and sequential control-value runs are separate forms.
 
-Tika §14.1 records a bare payload `0x001d` that can be a coordinate value. Its presence alone must not reject a valid record as inline content. Conversely, the parser's rejection of a `0x001d 0x001e` pair is not established as universal format grammar.
+A bare payload `0x001d` can be a coordinate value; its presence alone does not identify inline content. Conversely, a parser's rejection of a `0x001d 0x001e` pair is not established as universal format grammar.
 
 ## Classes and subprofiles
 
@@ -43,45 +45,68 @@ Tika §14.1 records a bare payload `0x001d` that can be a coordinate value. Its 
 | --- | --- | --- |
 | `0x0010`, `w4=0x008f` | Parent ruled declaration; initial records fit `L = w5 + 12` | That header family |
 | `0x0030`, length 12 | Span declaration before text; `w4=b0`, `w5=b1` | Complete framing and parent association |
-| `0x0020` | Tika uses flow termination; rjtd also observes page-style/TOC settings | Class alone does not terminate every table |
+| `0x0020` | Used as flow termination in one parser; page-style/TOC settings also occur | Class alone does not terminate every table |
 | `0x0000` | Field, object, and inline contexts | Check length, tag, and contiguous wrappers |
 
-Initial records also include `w4=0x002e`, `0x0026`, `0x002a`, and `0xffff`. Preserve the `0x002a` large-number pairs/inner-008f candidates and the 0026 style/indent candidates. Small values in one family and coordinate-like values in another do not define a global unit.
+Initial records also include `w4=0x002e`, `0x0026`, `0x002a`, and `0xffff`. The `0x002a` family contains large-number pairs and inner-008f candidates; 0026 has style/indent candidates. Small values in one family and coordinate-like values in another do not define a global unit.
+
+The controlled fixed-pitch case also has a composite `0x0010` record with this prefix at w3–w9:
+
+```text
+0000 0020 0004 0008 03e8 0008 03e8
+```
+
+The two pitch attributes agree; `0x03e8` (1000) corresponds to the selected 10 mm line pitch. The inner `0x008f` starts at w10, shifting the ordinary ruled fields and style-unit positions by six words. These offsets belong to the original composite frame. The direct `w4=0x008f` layout does not cover this form.
 
 ## Declared span counts and coordinates
 
-Tika §3.1 reports this relationship in the `w4=0x008f` family:
+The recorded `w4=0x008f` family has this reported relationship:
 
 ```text
 w5 = 4 * (n - 1) + 3
 w5 = 7 -> n = 2; w5 = 11 -> n = 3; w5 = 15 -> n = 4
 ```
 
-n is the physical declared span count in that family, not necessarily the logical output-cell count. The result is compatible with rjtd's parent/span records but was not independently reproduced during this consolidation.
+n is the physical declared span count in that family, not necessarily the logical output-cell count. Compatibility with other parent/span records does not establish independent reproduction of the formula.
 
-Initial records have four-word subentries. Tika reports wall tag 78 with `b1=78` and next `b0=80`. A parent w6 equal to the following maximum b1 is another bounded observation, not a universal total-width rule.
+Initial records have four-word subentries. One reported case has wall tag 78, `b1=78`, and the next `b0=80`. A parent w6 equal to the following maximum b1 is another bounded observation, not a universal total-width rule.
 
 ### Advance axis and crossing rules
 
-Tika §§2.3–2.4 interprets b0/b1 on the orientation-relative text advance axis. A vertical crossing-rule case has 36 parent headers, repeated `[0,40]` / `[42,160]` spans, and wall tag 40. A text-free case also emits repeated declarations.
+One interpretation places b0/b1 on the orientation-relative text advance axis. A vertical crossing-rule case has 36 parent headers, repeated `[0,40]` / `[42,160]` spans, and wall tag 40. A text-free case also emits repeated declarations.
 
-Preserve this evidence for text-independent declarations and relative axes. Do not substitute paper x coordinates or fixed column numbers. Equivalence with rjtd's page-space units/transforms requires further comparison.
+These cases support text-independent declarations and relative axes, not direct paper x coordinates or fixed column numbers. Their relation to page-space units and transforms remains unresolved.
 
-The early description associates 2/4-unit gaps with stroke footprint. Later crossing-rule observations associate varying gaps with text avoidance/partitioning and distinguish them from physical rule length. Do not merge these into a universal stroke-width or cell-padding unit.
+The early description associates 2/4-unit gaps with stroke footprint. Later crossing-rule observations associate varying gaps with text avoidance/partitioning and distinguish them from physical rule length. These interpretations do not establish a universal stroke-width or cell-padding unit.
 
 ## Separators and ownership
 
-`0x000e` is a payload-free one-word separator in the inspected ruled contexts. Tika interprets it as Row Advance. Later sections merge several flow rows into one output row, so a separator is not in one-to-one correspondence with logical `<tr>`.
+`0x000e` is a payload-free one-word separator in the inspected ruled contexts. Its Row Advance interpretation concerns source flow. Reconstructions can merge several flow rows into one output row, so separators and logical `<tr>` elements are not in one-to-one correspondence.
 
-rjtd's controlled 2026 case places a preceding body paragraph in the same `0x000e` interval as the first ruled span. This does not disprove flow advance; it limits deriving table start and ownership from the separator alone.
+A controlled Ichitaro 2026 case places a preceding body paragraph in the same `0x000e` interval as the first ruled span. This does not disprove flow advance; it limits deriving table start and ownership from the separator alone.
 
-Tika handles `0x000a` as WRAP or blank-span advance. rjtd preserves it in cell/paragraph flow. That value alone does not equate hard breaks, displayed wraps, and output `<br>`.
+`0x000a` occurs in cell/paragraph flow and is interpreted as WRAP or blank-span advance in one parser. The value alone does not equate hard breaks, displayed wraps, and output `<br>`.
 
-Compare single rows/columns, trailing empty rows, erased boundaries, wrapping, and ordinary text between ruled regions. Empty projected output is not a reason to discard source declarations.
+Empty projected output does not establish the absence of source declarations.
+
+### Controlled empty spans and partial boundaries
+
+In the controlled two-column family, a truly empty span has consecutive `0x0030` declarations without a text event. A space-only span retains actual space characters and its own source range.
+
+The vertical-merge comparison changes the left middle junction from `0x17`
+to `0x13` and its following run from `0x14` to zero. The right boundary and
+text order remain. An LF after the first left text and an LF-only boundary
+span also remain. These observations do not establish logical rowspan or
+editing ownership.
+
+The explicit-break case adds a vertical-only physical band. A separate
+row-growth case has 11 physical bands for four logical rows. Physical band
+count therefore need not equal logical row count or follow an alternating
+text/border pattern.
 
 ## Additional span-header fields
 
-Tika §§13–19 reports w6/w7 continuation and closure associations:
+The additional flow records associate w6/w7 with continuation and closure:
 
 | Field/condition | Reported use | Limit |
 | --- | --- | --- |
@@ -90,7 +115,7 @@ Tika §§13–19 reports w6/w7 continuation and closure associations:
 | `w7=0x0002` | Same-span downward-continuation anchor | Keep the specific contrast evidence |
 | WRAP termination, identical span signature, each row's own parent | Tall-cell merge conditions | Separate raw combinations from output decisions |
 
-rjtd framing records do not independently verify all these conditions. Retain field observations without adopting whitespace, character-class, and width thresholds as shared storage grammar.
+These associations are not independently verified by the initial framing records. Whitespace, character-class, and width thresholds used for reconstruction are not shared storage grammar.
 
 ## Trailing text-style grammar
 
@@ -115,13 +140,51 @@ Changes persist until replaced. The initial shared widths are:
 
 ## Separate wall-style observations
 
+### Controlled Ichitaro 2026 junction profile
+
+The black-base, transparent, thick, red, dashed, and one-transparent-edge comparisons retain identical content records, LineMark, and PageMark. Only trailing style events change. Junction source units have these directional associations:
+
+| Direction | Preset property ID | Transparency property ID | BGR24 color property ID |
+| --- | ---: | ---: | ---: |
+| Up | 1 | 4 | 15 |
+| Down | 2 | 5 | 16 |
+| Right | 3 | 6 | 17 |
+
+The numbers in this table are property IDs, not property values. Their
+meanings depend on the junction context. Property 2 still denotes size on
+the controlled text ranges.
+
+The profile has at least three consecutive physical parent records with
+`w4=0x008f` and length `w5 + 12`. A complete strip is
+`[junction, 0, right-run-state, run-length]`. The final junction can instead
+end as `[junction, 0]` before `ffff, 0`, or have an explicit blank padding run.
+Junctions occupy two source grid units; their centers are one unit after
+their strip starts. Interior widths and any final padding agree across
+bands and exactly cover the parent extent. The explicit-tail form includes
+one additional terminal unit in that extent.
+
+Top/bottom bands use `0x16`/`0x15` before the last junction and `0x12`/`0x11`
+at the last junction. Internal bands use `0x13` or `0x17` before the last
+junction and `0x13` at the last. Masks `0x01`, `0x02`, and `0x04` select
+up, down, and right strokes in this profile. A right stroke has run state
+`0x14`; otherwise that state is zero.
+
+Preset value 3 associates with thick solid lines and value 4 with dashed
+lines. Transparency value 1 hides a stroke; value 0 leaves it visible.
+Value `0x80` occurs at inactive horizontal ends; its meaning on an active
+stroke remains open. Color uses the controlled BGR24 mapping.
+
+Reset/unset paint and unsupported values have no established universal defaults. The source reports native print widths of 0.6/1.92 pt and 2.4 pt dashes, but the UI offers presets. These measurements do not decode a source length unit. Joins, dash phase, corner clipping, other presets, logical merge ownership, and general multipage paint remain unresolved.
+
+Malformed strips, inconsistent widths or extents, source gaps, and incomplete style events are outside this profile. Its grammar and field correspondence with the Lite 2 profiles below remain unresolved.
+
 ### Early inline-style description
 
-Tika §4 associates source notation `payload[4]` values 0x14/0x08 with flow partition/inter-line rules. It reports BOX sequence `0x16→0x13→0x15` and crossing sequence `0x12→0x13→0x11`.
+An early record associates source notation `payload[4]` values 0x14/0x08 with flow partition/inter-line rules. It reports BOX sequence `0x16→0x13→0x15` and crossing sequence `0x12→0x13→0x11`.
 
-That payload notation differs from absolute parent `w4=0x008f`. Confirm its origin before normalizing offsets.
+That payload notation differs from absolute parent `w4=0x008f`. Its coordinate origin is unresolved, so the offsets are not directly interchangeable.
 
-Retain §4.2's initial tail mapping separately: 0x22 thin black, 0x1c thick black, 0x06 cyan dashed, 0x4f thin vertical black, and 0x00 standalone rule. Later 2026/Lite 2 records report that vocabulary as unreproduced. Negative observations affected by the extractor correction also require remeasurement. Do not join this mapping with the FE family below.
+The early tail mapping is: 0x22 thin black, 0x1c thick black, 0x06 cyan dashed, 0x4f thin vertical black, and 0x00 standalone rule. Later 2026/Lite 2 records report that vocabulary as unreproduced. Negative observations affected by the extractor defect remain unverified. No correspondence with the FE family below is established.
 
 ### Lite 2 P2/P3 trailing styles
 
@@ -146,21 +209,21 @@ The all-thin baseline lacks these FE 02/03 entries. This does not establish that
 | Multiple subentries under one marker | Compound declaration contrast |
 | Individual top/bottom IDs | Unresolved |
 
-Preserve the earlier single-edge ID set `{0e,12,0c,96}` versus P3 `{09,01,03}`. Authoring-operation differences are a hypothesis. Do not generalize IDs to every document/version.
+The earlier single-edge ID set is `{0e,12,0c,96}`, while P3 reports `{09,01,03}`. Different authoring operations are a possible explanation, but this remains a hypothesis. The IDs are not established across all documents or versions.
 
-PDF widths 0.6 pt thin / 1.92 pt bold describe that conversion output. Do not combine them with Sun-reader quanta or rjtd defaults to define JTD units.
+PDF widths of 0.6 pt thin / 1.92 pt bold describe that conversion output. They do not establish JTD units or equivalence with Sun-reader quanta or renderer defaults.
 
 ### Unresolved relation to text properties
 
-rjtd's text ranges associate property 2 with size and 3 with font references. Tika associates FE 02/03 with wall direction/weight. Matching bytes do not establish the same field semantics.
+In the text profile, property 2 denotes size and 3 denotes font references. The controlled junction profile associates those IDs with down/right presets. The Lite 2 FE 02/03 profile associates them with wall direction/weight. Matching bytes do not establish the same field semantics.
 
-Compare owning ranges, cursor, preceding ID, and complete framing on identical inputs. Target-specific meanings in one grammar versus different substructures remain alternatives.
+Owning ranges, cursor origins, preceding IDs, and complete framing have not been reconciled across these profiles. Target-specific meanings in one grammar and different substructures remain alternatives.
 
-Current Tika code scans all bytes for FE candidates and filters registered marker IDs into WallRule events. That search does not prove boundaries between these grammars. Its fallback classification of unregistered style values as thin is not a shared storage rule.
+The inspected FE scanner searches all bytes for candidates and filters registered marker IDs into WallRule events. This does not prove grammar boundaries. Its fallback classification of unregistered style values as thin is not a shared storage rule.
 
 ## Reader-internal observations and corrections
 
-Tika §§20.1–20.7 concerns Sun-reader loaders, RAM models, and property behavior. Per-edge codes/colors, chosen widths, and decoration names are reference observations, not direct native-field assignments.
+The Sun-reader observations concern loaders, RAM models, and property behavior. Per-edge codes/colors, chosen widths, and decoration names are reference observations, not direct native-field assignments.
 
 Whether `0x5555` and `0x5001–0x500b` vocabulary is native or intermediate remains open. RAM sizes 0x584/0x51c are not file strides. This RFC does not transfer reconstructed implementation logic or field-reading procedures from the reader.
 
@@ -168,9 +231,9 @@ Early §§20.8–20.9 dumps, ASCII ledgers, and per-save content changes are aff
 
 ## Reconstruction remains implementation-specific
 
-Span coalescing, column unions, colspan/rowspan, blank-strip removal, numeric-header adoption, and character-class joins are reconstruction rules. Preserve supporting cases without making these algorithms required shared behavior.
+Span coalescing, column unions, colspan/rowspan, blank-strip removal, numeric-header adoption, and character-class joins are reconstruction rules. Their supporting cases do not make these algorithms required shared behavior.
 
-Later Tika sections revise the early no-in-cell-br contract to permit merge-boundary LineBreaks. §§21–22 retain 179 oracle versus 175 parser in-cell breaks and conclude that the inspected native features do not distinguish the author's seam intent.
+The later output contract permits merge-boundary LineBreaks, revising an earlier no-in-cell-br rule. The recorded audit has 179 oracle versus 175 parser in-cell breaks and finds that the inspected native features do not distinguish the author's seam intent.
 
 That is a limit of that input and feature census, not proof of permanent impossibility across the format. Handmade HTML, character-multiset preservation, and source-order preservation are different checks.
 
@@ -182,21 +245,23 @@ That is a limit of that input and feature census, not proof of permanent impossi
 | Span count | Parent/span framing | Reported w5 arithmetic | Retain formula/profile without claiming independent reproduction |
 | Rows/ownership | Surrounding-paragraph counterexample | Row Advance then logical merging | Distinguish source advance and output rows |
 | Class 0020 | Style/TOC apply/reset | Termination event | No single meaning for the entire class |
-| Wall styles | Modern text-property/range contrasts | Tail codes, Lite 2 FE, reader internals | Keep lineages and text-property relation separate |
+| Wall styles | Text-property contrasts and controlled junction preset/transparency/color profile | Tail codes, Lite 2 FE, reader internals | Keep contextual meanings and source profiles separate |
 | Page continuation | Multi-page source ranges | Per-page output-table proposal | Separate source relation and output splitting |
 
-## Validation and open questions
-
-Other maintainers should check logical streams, declared extents, and framed fields on permitted identical inputs. Change span counts, single rows/columns, wrapping, edge/weight/color, and direction independently.
+## Open questions
 
 Unresolved areas are count-formula coverage and ownership; b0/b1 axes/units; w6/w7 continuation versus settings; tail/FE/text-property relationships; P3 top/bottom IDs, color alignment, and ID variation; page boundaries; and edit/save grammar.
 
 ## Sources
 
-Source RFC numbers retain their original project numbering.
+Source RFC numbers retain their original project numbering. The cited English source RFC 0013 has no section bodies for 8–12 or 18; no claims are reconstructed from those missing sections.
+
+- [OpenJTD/rjtd detailed research 0009 (L467)](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0009-document-text-paragraph-record.md#L467)
+- [OpenJTD/rjtd detailed research 0009 (L536)](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0009-document-text-paragraph-record.md#L536)
+- [OpenJTD/rjtd detailed research 0009 (L602)](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0009-document-text-paragraph-record.md#L602)
 
 - [OpenJTD/rjtd source RFC 0009](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/openjtd-spec/rfc/0009-document-text-paragraph-record.md)
-- [OpenJTD/rjtd source RFC 0009](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0009-document-text-paragraph-record.md)
+- [OpenJTD/rjtd detailed research 0009](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0009-document-text-paragraph-record.md)
 - [KHiyowa/Tika-JTD source RFC 0009](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0009-document-text-paragraph-record.md)
 - [KHiyowa/Tika-JTD source RFC 0013](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0013-structured-sax-flow-contract.md)
 - [KHiyowa/Tika-JTD source RFC 0013 (L117)](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0013-structured-sax-flow-contract.md#L117)

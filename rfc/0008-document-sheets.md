@@ -1,12 +1,14 @@
 # RFC 0008: Document Sheets and Subdocument Storages
 
-## Scope and provenance
+## Scope
 
-This RFC records sheet metadata and body-storage associations. Keep names, storage IDs, and original-path candidates distinct. Selection APIs, text concatenation, tabs, and SAX containers belong to implementations.
+This RFC records sheet metadata and body-storage associations. Names, storage IDs, and original-path candidates have distinct roles. Selection APIs, text concatenation, tabs, and SAX containers belong to implementations.
 
-The direct source is KHiyowa's Rust fork feature/source RFC 0010, followed by its Kotlin port. The original addition is `c67c9493cf25be573edddbd868ff8068a886772f` (2026-09-20), reapplied on dev-hiyo as `40e288b1bfcd9d4f26a1fd1f3f9b68e2f3e2c06a`. The Tika port is `e78385bedb27179f9ffa6790a1447097b0fa9328`.
+## Evidence and coverage
 
-The inspected rjtd mainline has no dedicated multi-sheet record. Related body/container observations do not independently validate sheets. Original Rust tests include synthetic cases and an expected seven-sheet native case that returns when its local input is absent. Test existence is not evidence that it ran.
+The candidate structures below come from code and synthetic tests. A native test expects seven sheets, but returns when its local input is absent. Its presence does not establish that the test ran or independently verified the native metadata fields.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The sources link the code and tests, including the optional seven-sheet test. That test's native input is not attached to this RFC.
 
 ## Terms
 
@@ -29,7 +31,7 @@ Inspected code and synthetic inputs use:
 /ObjectSheets/DocSheet/DOCS_0001/DocumentText
 ```
 
-| Item | Candidate role | Further check |
+| Item | Candidate role | Unresolved detail |
 | --- | --- | --- |
 | Root DocumentText | Root body | Default/first UI sheet relationship |
 | SheetInfo | Root-name metadata | Exact fields and complete layout |
@@ -37,11 +39,11 @@ Inspected code and synthetic inputs use:
 | DocItemInfo2 | Original-path strings | Correspondence and missing items |
 | DOCS_0000 family | Subsheet bodies | ID-to-name conversion |
 
-Original source 0010 describes root `/DocItemInfo`; both original Rust and Kotlin use `/ObjectSheets/DocSheet/DocItemInfo`. These are competing document/code descriptions. Compare native inventories before treating either path as universal or dismissing one as a typo.
+The source record describes root `/DocItemInfo`, while both inspected implementations use `/ObjectSheets/DocSheet/DocItemInfo`. The cited material does not resolve this discrepancy through native storage inventories or establish a universal path.
 
 ## DocItemInfo candidate records
 
-Original code and synthetic inputs use:
+The inspected code and synthetic inputs use:
 
 | Sequence | Form | Candidate role |
 | --- | --- | --- |
@@ -52,13 +54,13 @@ Original code and synthetic inputs use:
 | Next | LE-u32 | Storage ID |
 | Tail | 26 bytes | Unknown |
 
-Verify native field boundaries/repetition before generalizing. Do not assign GUID semantics to skipped fields. Tolerating a short last trailer is parser behavior, not an established save rule.
+The inspected code and synthetic tests do not independently verify native field boundaries or repetition. The skipped fields have no established GUID meaning. Tolerance of a short last trailer is parser behavior, not an established save rule.
 
 ## Names, paths, and body scope
 
-The implementations search SheetInfo for length/string candidates and DocItemInfo2 for path-like strings. Their length caps and character filters are not format limits. Confirm list/path correspondence and missing-path behavior. Distinguish stored names from the fallback `タイトル`.
+The inspected implementations search SheetInfo for length/string candidates and DocItemInfo2 for path-like strings. Their length caps and character filters are not format limits. List/path correspondence and missing-path behavior remain unresolved. The fallback `タイトル` is generated output, not a confirmed stored name.
 
-Identify each body by its owning storage. Metadata UTF-16LE and body UTF-16BE must remain distinct. Check subsheet notes, positions, marks, and styles individually; root streams are not necessarily global.
+The inspected code associates each body with its storage and reads metadata as UTF-16LE and body text as UTF-16BE. The scope of subsheet notes, positions, marks, and styles remains unresolved; root auxiliary streams are not established as global.
 
 ## Record and implementation differences
 
@@ -71,11 +73,9 @@ Identify each body by its owning storage. Metadata UTF-16LE and body UTF-16BE mu
 | Representation | Tika 0013 §5.4 uses sheet div/headings/notes | Output containers do not define CFB grammar |
 | JTTC | Tika sheet enumeration uses original input | Porting alone does not establish compressed-inner-sheet coverage |
 
-Synthetic tests support record handling/output contracts, not independent verification of every native metadata field. Source 0012's sheet-local equation paths are related evidence, not a complete sheet grammar.
+The feature was added to KHiyowa's Rust fork on 2026-09-20 and then ported to Kotlin. The inspected rjtd mainline has no dedicated multi-sheet record. These implementations share a source; related body/container records do not independently verify sheet metadata. Sheet-local equation paths provide related evidence, but do not define a complete sheet grammar. Source commits are linked below.
 
-## Validation and open questions
-
-Create small Ichitaro 2026 inputs and change sheet count, order, name, and text individually. Record authoring steps/version, hashes, inventories, metadata changes, and body associations. Other maintainers should verify paths, boundaries, names, IDs, and bodies, without requiring identical UI or text concatenation.
+## Open questions
 
 Open areas include UI/list/ID order, root association, complete SheetInfo/DocItemInfo2 structure, unknown DocItemInfo fields/tails, shared versus local auxiliary streams, missing/damaged metadata, old versions, and JTTC.
 
@@ -92,3 +92,5 @@ Source RFC numbers retain their original project numbering.
 - [KHiyowa/Tika-JTD source RFC 0013 (L249)](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0013-structured-sax-flow-contract.md#L249)
 - [KHiyowa/Tika-JTD source RFC 0012 (L19)](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0012-jseq-equation-object.md#L19)
 - [KHiyowa/Tika-JTD ObjectSheetsTest.kt](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/tika-parser-jtd/src/test/kotlin/com/hiyowa/tika/jtd/ObjectSheetsTest.kt)
+- [KHiyowa/OpenJTD fork reapplication 40e288b](https://github.com/KHiyowa/OpenJTD/commit/40e288b1bfcd9d4f26a1fd1f3f9b68e2f3e2c06a)
+- [KHiyowa/Tika-JTD Kotlin sheet port e78385b](https://github.com/KHiyowa/Tika-JTD/commit/e78385bedb27179f9ffa6790a1447097b0fa9328)

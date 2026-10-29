@@ -6,7 +6,9 @@ This RFC records CFB storages and streams observed in JTD/JTT documents. An inve
 
 ## Evidence and coverage
 
-The initial five-document inventory dates from 2026-06-18. Later observations extend that inventory. Record input IDs, SHA-256 values, authoring versions, and reproduction results before extending a profile to other inputs.
+The initial inventory comprises five documents examined on 2026-06-18. Later records add sheet and embedded-object storages.
+
+This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. A complete redistributable reproduction set for the initial 2026-06-18 inventory is not attached to this RFC. This describes the material provided here, not the existence of the underlying research material.
 
 ## Observed top-level streams
 
@@ -66,9 +68,9 @@ JTTC has an outer and a decompressed inner container. Absence from the outer dir
 
 ## Later sheet and object observations
 
-Tika JTD+ sheet, embedding, and equation research includes `/ObjectSheets/DocSheet/DOCS_XXXX/` and nested `EmbedItems/Embedding N/`. These paths extend the observed inventory; they are not mandatory for every document.
+Observed storage configurations include sheet-local `/ObjectSheets/DocSheet/DOCS_XXXX/` storages and nested `EmbedItems/Embedding N/` object storages. These are examples of observed paths, not mandatory entries in every document.
 
-Body, header, box text, and object data can occupy separate streams. Identify a stream by its owning container and sheet, as well as its name.
+Body, header, box text, and object data can occupy separate streams. A stream's identity includes its owning container and sheet as well as its name.
 
 ## Differences between source records
 
@@ -79,26 +81,13 @@ Body, header, box text, and object data can occupy separate streams. Identify a 
 | Later storages | Object paths and source-range research | Source RFCs 0010–0012 add sheet and embedding records | Keep profile and owning paths explicit |
 | Save comparison | Physical bytes and logical streams are distinct | Source RFC 0013 §§20.10–20.12 correct an extractor defect | Use corrected logical-stream measurements |
 
-Tika JTD+ reports that the P2 input and its unedited resave have byte-identical content streams, including `DocumentText`, when read again through POIFS. The earlier ASCII ledger and content-fingerprint changes were withdrawn after a FAT-chain ordering defect was found. This applies to that save pair, not every save operation.
+In the recorded P2 input and its unedited resave, logical content streams including `DocumentText` are byte-identical when read through POIFS. Earlier ASCII-ledger and content-fingerprint changes were withdrawn after a FAT-chain ordering defect was found in the extractor. This result applies to that save pair.
 
 ## Reading failures and recovery
 
-FAT and sector-chain inconsistencies were reported in some inputs. Successful recovery does not make a malformed chain a normative JTD rule. Distinguish missing streams, unreadable streams, and streams obtained through recovery.
+FAT and sector-chain inconsistencies were reported in some inputs. Successful recovery does not make a malformed chain a normative JTD rule. A missing stream, an unreadable stream, and a recovered stream are different outcomes.
 
 Libraries, recovery algorithms, and resource budgets belong to implementations.
-
-## Reproduction and validation
-
-For each input, record:
-
-- Input ID, SHA-256, and authoring version.
-- Basis for analysis and sharing.
-- Complete storage/stream paths, entry kinds, and byte lengths.
-- Content hashes for readable logical streams.
-- Reading failures and recovery use.
-- Tools and implementation versions.
-
-Other maintainers can compare paths, kinds, lengths, and logical stream contents on the same input. Keep physical sector placement separate from stream contents. Maintain version coverage in a separate compatibility table.
 
 ## Open questions
 
@@ -110,6 +99,8 @@ Other maintainers can compare paths, kinds, lengths, and logical stream contents
 ## Sources
 
 Source RFC numbers retain their original project numbering.
+
+- [OpenJTD/rjtd detailed research 0001](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/rjtd/docs/research/0001-container.md)
 
 - [OpenJTD/rjtd source RFC 0001](https://github.com/OpenJTD/rjtd/blob/3a3ddee66b21f4e3e088a13dbdfd196fdf511ad1/openjtd-spec/rfc/0001-container.md)
 - [KHiyowa/Tika-JTD source RFC 0001](https://github.com/KHiyowa/Tika-JTD/blob/045ef005f7e45202650d5601b46ef6f4915d8190/docs/spec/rfc/0001-container.md)
