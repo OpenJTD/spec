@@ -6,7 +6,7 @@ This RFC records `/DocumentTextPositionTables`, position candidates, and the sep
 
 The recorded profiles include the initial position-table observations and controlled Ichitaro 2026 bookmark cases.
 
-Positions below are relative to the owning logical stream.
+Byte offsets that locate fields below are relative to the owning logical stream. The targets and origins of stored position values remain unresolved.
 
 This RFC carries forward the cited research. The reported observations were not independently reproduced during this consolidation. The position-table and bookmark cases have source-record links below. A complete input-level reproduction index is not included here.
 

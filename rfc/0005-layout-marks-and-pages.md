@@ -18,7 +18,7 @@ One family has a 12-byte header and 84-byte entries. Three BE-u32 header values 
 | `a5.jtd` | 74 | 75 |
 | `b6.jtd` | 98 | 98 |
 
-Variable-length families and trailing data are also reported, so `12 + N * 84` does not describe every stream. Some values correlate with source-line ranges; mixed payloads and sentinel candidates prevent treating every entry as an active body page. Whether line origins include margins or headers remains unresolved.
+For a stream consisting of the 12-byte header and fixed 84-byte entries, the length is `12 + stored_entry_count * 84`. The header value N does not necessarily equal the stored entry count. Variable-length families and trailing data are also reported. Some values correlate with source-line ranges; mixed payloads and sentinel candidates prevent treating every entry as an active body page. Whether line origins include margins or headers remains unresolved.
 
 ## PaperMark
 
@@ -73,7 +73,7 @@ View `0x1002` has the same order at byte 2 in a 32-byte `00 d8` form, or byte 3 
 
 ## Page boundaries and ruled continuation
 
-Recorded page-continuation behavior describes page-local strokes redrawn on the next page. Page-separated output tables are a reconstruction proposal; the authoritative source boundary trigger remains unresolved.
+Recorded page-continuation behavior describes page-local strokes redrawn on the next page. Tika JTD+ adopted page-separated output tables as an output rule. The authoritative source boundary trigger and its implementation remain unresolved. This output rule does not establish native page-boundary grammar.
 
 Multi-page source ranges and style changes do not determine whether aligned strokes form one logical table. Physical stroke extent, flow continuation, and output splitting are distinct.
 
@@ -115,7 +115,7 @@ Slot presence and printing enable are distinct. In the observed 2,026-byte setti
 | Initial marks | Initial inventory retained | Imported source 0007 | One source |
 | Direction | Archival bit-0 candidate and later view contrasts | Six PaperMark contrasts in 0013 | Keep input-specific predicates |
 | Stock/margins/Header | Later authored contrasts | Those additions are absent from imported 0007 | Attribute additions to rjtd |
-| Page-separated tables | Source ranges and boundaries | Projection proposal with unresolved trigger | Separate source meaning and output policy |
+| Page-separated tables | Source ranges and boundaries | Adopted output rule; source trigger and implementation remain unresolved | Separate source meaning and output policy |
 
 Different word-width notation can describe the same bytes without resolving their interpretation. Authoring conditions and versions differ between the recorded cases.
 

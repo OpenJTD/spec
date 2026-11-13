@@ -184,7 +184,7 @@ An early record associates source notation `payload[4]` values 0x14/0x08 with fl
 
 That payload notation differs from absolute parent `w4=0x008f`. Its coordinate origin is unresolved, so the offsets are not directly interchangeable.
 
-The early tail mapping is: 0x22 thin black, 0x1c thick black, 0x06 cyan dashed, 0x4f thin vertical black, and 0x00 standalone rule. Later 2026/Lite 2 records report that vocabulary as unreproduced. Negative observations affected by the extractor defect remain unverified. No correspondence with the FE family below is established.
+The early tail mapping is: 0x22 thin black, 0x1c thick black, 0x06 cyan dashed, 0x4f thin vertical black, and 0x00 standalone rule. Later 2026/Lite 2 records report `0x1c` and `0x22` as not reproduced in the inspected probes. Negative observations affected by the extractor defect remain unverified. No correspondence with the FE family below is established.
 
 ### Lite 2 P2/P3 trailing styles
 
@@ -246,7 +246,7 @@ That is a limit of that input and feature census, not proof of permanent impossi
 | Rows/ownership | Surrounding-paragraph counterexample | Row Advance then logical merging | Distinguish source advance and output rows |
 | Class 0020 | Style/TOC apply/reset | Termination event | No single meaning for the entire class |
 | Wall styles | Text-property contrasts and controlled junction preset/transparency/color profile | Tail codes, Lite 2 FE, reader internals | Keep contextual meanings and source profiles separate |
-| Page continuation | Multi-page source ranges | Per-page output-table proposal | Separate source relation and output splitting |
+| Page continuation | Multi-page source ranges | Adopted per-page output rule; source boundary detection and implementation remain unresolved | Separate source relation and output splitting |
 
 ## Open questions
 

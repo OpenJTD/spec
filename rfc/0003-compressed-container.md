@@ -51,7 +51,7 @@ Decompressed data starts with CFB signature `d0 cf 11 e0 a1 b1 1a e1`. The paylo
 
 ## Inner document
 
-The recorded first input has 65 inner streams and a 564-byte `/DocumentText`. Fonts, styles, positions, layout marks, notes, and objects belong to the inner container. A blank/control-heavy body does not imply absent auxiliary data. Identical paths in outer and inner containers have different owners.
+The recorded first input has 65 inner entries: 55 streams and 10 storages, excluding the root entry. Its `/DocumentText` is 564 bytes. Fonts, styles, positions, layout marks, notes, and objects belong to the inner container. A blank/control-heavy body does not imply absent auxiliary data. Identical paths in outer and inner containers have different owners.
 
 ## Record and implementation differences
 
